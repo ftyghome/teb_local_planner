@@ -13,6 +13,9 @@ endif()
 #  add_compile_options(-Wall -Wextra -Wpedantic)
 #endif()
 
+add_subdirectory(thirdparty/g2o)
+
+
 ## Find catkin macros and libraries
 find_package(ament_cmake REQUIRED)
 find_package(costmap_converter REQUIRED)
@@ -42,7 +45,6 @@ message(STATUS "System: ${CMAKE_SYSTEM}")
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake_modules)
 message(STATUS "${CMAKE_MODULE_PATH}")
 find_package(SUITESPARSE REQUIRED)
-find_package(G2O REQUIRED)
 find_package(Boost REQUIRED)
 
 # Eigen3 FindScript Backward compatibility (ubuntu saucy)
@@ -57,8 +59,10 @@ elseif (EXISTS "FindEigen.cmake")
   e.g. by adding it to ${PROJECT_SOURCE_DIR}/cmake_modules.")
 endif (EXISTS "FindEigen3.cmake")
 
-set(EXTERNAL_INCLUDE_DIRS ${Eigen_INCLUDE_DIRS} ${SUITESPARSE_INCLUDE_DIRS} ${G2O_INCLUDE_DIR})
-set(EXTERNAL_LIBS ${Boost_LIBRARIES} ${SUITESPARSE_LIBRARIES} ${G2O_LIBRARIES})
+set(G2O_INCLUDE_LOCAL_DIR thirdparty/g2o/g2o)
+
+set(EXTERNAL_INCLUDE_DIRS ${Eigen_INCLUDE_DIRS} ${SUITESPARSE_INCLUDE_DIRS} ${G2O_INCLUDE_LOCAL_DIR})
+set(EXTERNAL_LIBS ${Boost_LIBRARIES} ${SUITESPARSE_LIBRARIES} core csparse_extension stuff solver_adapchol)
 
 ###########
 ## Build ##
@@ -150,13 +154,16 @@ pluginlib_export_plugin_description_file(nav2_core teb_local_planner_plugin.xml)
 #############
 
 if(BUILD_TESTING)
-  find_package(ament_cmake_gtest REQUIRED)
-  #ament_add_gtest(homotopy_class_planner_test
-  #    test/homotopy_class_planner_test.cpp
-  #)
-  #target_link_libraries(homotopy_class_planner_test
-  #    teb_local_planner
-  #)
+#  find_package(ament_cmake_gtest REQUIRED)
+
 endif()
 
+
+
 ament_package()
+
+add_executable(homotopy_class_planner_test
+        test/homotopy_class_planner_test.cpp)
+
+target_link_libraries(homotopy_class_planner_test
+        teb_local_planner)

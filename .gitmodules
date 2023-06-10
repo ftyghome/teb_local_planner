@@ -1,0 +1,4 @@
+[submodule "teb_local_planner/thirdparty/g2o"]
+	path = teb_local_planner/thirdparty/g2o
+	url = git@github.com:ftyghome/g2o.git
+	branch = solver_adapchol

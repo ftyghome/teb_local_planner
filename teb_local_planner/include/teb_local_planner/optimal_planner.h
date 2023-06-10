@@ -56,8 +56,7 @@
 #include "g2o/core/factory.h"
 #include "g2o/core/optimization_algorithm_gauss_newton.h"
 #include "g2o/core/optimization_algorithm_levenberg.h"
-#include "g2o/solvers/csparse/linear_solver_csparse.h"
-#include "g2o/solvers/cholmod/linear_solver_cholmod.h"
+#include "g2o/solvers/adapchol/linear_solver_adapchol.h"
 
 // g2o custom edges and vertices for the TEB planner
 #include "teb_local_planner/g2o_types/edge_velocity.h"
@@ -90,7 +89,7 @@ namespace teb_local_planner
 typedef g2o::BlockSolverX TEBBlockSolver;
 
 //! Typedef for the linear solver utilized for optimization
-typedef g2o::LinearSolverCSparse<TEBBlockSolver::PoseMatrixType> TEBLinearSolver;
+typedef g2o::LinearSolverAdapChol<TEBBlockSolver::PoseMatrixType> TEBLinearSolver;
 //typedef g2o::LinearSolverCholmod<TEBBlockSolver::PoseMatrixType> TEBLinearSolver;
 
 //! Typedef for a container storing via-points
